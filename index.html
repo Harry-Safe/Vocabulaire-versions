@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulaire — téléchargements</title>
+<meta name="author" content="Franck VARAULT">
+<meta name="description" content="Vocabulaire, séances de vocabulaire par thème pour le CP et le CE1 : application Windows et page pour le navigateur.">
+<link rel="icon" href="appli/icone.png">
+<style>
+:root{--fond:#eef6fa;--papier:#fffdf8;--texte:#1f2a33;--doux:#5f6b76;--accent:#1d8fc0;--accent2:#5cc2ea;--trait:#d8e7ef;--essai:#b7791f;--ombre:0 10px 30px rgba(20,80,110,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--fond:#111c22;--papier:#1b2a33;--texte:#e8f3f8;--doux:#a7bac5;--accent:#5cc2ea;--accent2:#1d8fc0;--trait:#2c3e49;--essai:#e0a84a;--ombre:0 10px 30px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--texte);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:880px;margin:0 auto;padding:32px 16px 48px}
+header{display:flex;gap:18px;align-items:center;margin-bottom:24px}
+header img{width:84px;height:84px;border-radius:20px;box-shadow:var(--ombre)}
+h1{margin:0;font-size:1.9rem}
+header p{margin:2px 0 0;color:var(--doux)}
+.carte{background:var(--papier);border:1px solid var(--trait);border-radius:22px;padding:20px 22px;margin:16px 0;box-shadow:var(--ombre)}
+.carte h2{margin:0 0 4px;font-size:1.25rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pastille{font-size:.8rem;font-weight:600;border-radius:999px;padding:2px 10px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.pastille.essai{background:color-mix(in srgb,var(--essai) 16%,transparent);color:var(--essai)}
+.boutons{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+a.bt{display:inline-flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--texte);border:1px solid var(--trait);border-radius:16px;padding:10px 16px;min-width:210px;flex:1 1 210px;background:color-mix(in srgb,var(--papier) 85%,var(--fond))}
+a.bt b{color:var(--accent)}
+a.bt span{font-size:.85rem;color:var(--doux)}
+a.bt:hover,a.bt:focus-visible{border-color:var(--accent);outline:none}
+ul{margin:8px 0 0;padding-left:20px}
+li{margin:3px 0}
+.note{color:var(--doux);font-size:.92rem}
+footer{margin-top:28px;color:var(--doux);font-size:.88rem}
+code{font-size:.9em}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="appli/icone.png" alt="">
+    <div><h1>Vocabulaire</h1><p>Séances de vocabulaire par thème, CP et CE1 · conçu par <b>Franck VARAULT</b></p></div>
+  </header>
+  <div id="canaux"><div class="carte"><p class="note">Chargement des versions…</p></div></div>
+  <div class="carte">
+    <h2>Installer</h2>
+    <ul>
+      <li><b>Application Windows</b> : lance l'installateur. À la première installation, Windows affiche « Windows a protégé votre ordinateur » : <i>Informations complémentaires</i>, puis <i>Exécuter quand même</i>. Les mises à jour suivantes s'installent ensuite toutes seules, hors séance, vérifiées par la signature de l'auteur ; suivi, bilans, évaluations et dossier de sauvegarde sont gardés.</li>
+      <li><b>Passer du navigateur à l'application</b> : dans le navigateur, <i>Réglages › Sauvegarde › Sauvegarder tout</i> ; dans l'application, <i>Charger une sauvegarde</i>.</li>
+      <li><b>Navigateur</b> (autre ordinateur) : la page <code>Vocabulaire.html</code> s'ouvre dans Edge, Chrome ou Brave, sans installation.</li>
+    </ul>
+  </div>
+  <footer>© 2026 Franck VARAULT, tous droits réservés. Le code a été écrit avec l'aide d'outils d'intelligence artificielle, sous la direction de l'auteur, qui a conçu l'appli et en a validé chaque version. Mots, devinettes et dessins originaux ; pictogrammes ARASAAC (Sergio Palao, CC BY-NC-SA) ; police Andika (SIL OFL).</footer>
+</main>
+<script>
+const NOMS = {appli: ["Application Windows", "installateur .exe"], html: ["Vocabulaire.html", "pour le navigateur"]};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
+const mo = n => (n / 1048576).toLocaleString("fr-FR", {maximumFractionDigits: 1}) + " Mo";
+fetch("versions.json", {cache: "no-store"}).then(r => r.json()).then(v => {
+  const c = v.canaux || {}, out = [];
+  for (const [canal, titre] of [["stable", "Version publiée"], ["essai", "Version d'essai"]]) {
+    const e = c[canal]; if (!e) { if (canal === "stable") out.push(`<div class="carte"><h2>${titre}</h2><p class="note">Pas encore de version publiée : la version d'essai ci-dessous est à tester en classe.</p></div>`); continue; }
+    out.push(`<div class="carte"><h2>${titre} <span class="pastille${canal === "essai" ? " essai" : ""}">${esc(e.version)}</span><span class="note">${esc(new Date(e.date).toLocaleDateString("fr-FR", {day: "numeric", month: "long", year: "numeric"}))}</span></h2>
+      <div class="boutons">${Object.entries(e.fichiers || {}).map(([k, f]) => `<a class="bt" href="${esc(f.url)}" download><b>${esc((NOMS[k] || [k])[0])}</b><span>${esc((NOMS[k] || ["", ""])[1])} · ${mo(f.taille)}</span></a>`).join("")}</div>
+      <ul>${(e.notes || []).map(n => `<li>${esc(n)}</li>`).join("")}</ul></div>`);
+  }
+  document.getElementById("canaux").innerHTML = out.join("");
+}).catch(() => { document.getElementById("canaux").innerHTML = '<div class="carte"><p class="note">Liste des versions indisponible pour le moment.</p></div>'; });
+</script>
+</body>
+</html>
