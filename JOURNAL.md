@@ -10,4 +10,6 @@ Le plus récent en tête.
 - Installateur signé avant l'envoi (le secret `TAURI_SIGNING_PRIVATE_KEY` n'est pas encore en place) ; signature
   vérifiée avec la clé publique de l'application (`5A6B8F7FEFB192FF`). Aucun canal stable : rien n'est publié sans
   l'accord de Franck.
-- À faire par Franck : GitHub Pages (source GitHub Actions) et secret `TAURI_SIGNING_PRIVATE_KEY`.
+- Mis en place par Franck le même soir : GitHub Pages (source GitHub Actions) et secret `TAURI_SIGNING_PRIVATE_KEY`.
+  Site en ligne vérifié à 23 h 20 : page de téléchargement, essai 4.1.0, `appli/essai/latest.json` signé (signature
+  valide pour la clé de l'application).
