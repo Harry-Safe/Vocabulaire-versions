@@ -1,10 +1,10 @@
 {
   "version": "4.1.0",
   "notes": "Application Windows « Vocabulaire » (installateur .exe, Tauri 2) : la même appli dans sa propre fenêtre, ouverte agrandie, une seule à la fois.\nDossier de sauvegarde automatique choisi une fois par une fenêtre de Windows puis rebranché tout seul à chaque démarrage et après chaque mise à jour, sans autorisation à redonner ; s'il est introuvable (Google Drive arrêté, clé débranchée), l'appli le signale et ne le recrée pas vide.\n« Enregistrer sous… » de Windows pour les sauvegardes et les tableaux de résultats.\nMises à jour automatiques et signées : l'application vérifie le site des mises à jour au démarrage et installe la nouvelle version hors séance (accueil ou page d'un thème) ; l'installateur n'est accepté que s'il porte la signature de l'auteur. Suivi, bilans, évaluations, images et dossier de sauvegarde sont gardés. Versions publiées ou d'essai au choix (Réglages › Mises à jour).\nDans le navigateur, Réglages › Mises à jour indique si une nouvelle version est sortie.\nFenêtre Réglages plus petite.",
-  "pub_date": "2026-11-08T22:09:18Z",
+  "pub_date": "2026-11-09T21:25:32Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUL2tySHZmNDlyV3BTYmdJd01SOXd3aWc0WGxjZEU3ZDRyUGFSNXEyR0lzdXFVbHFpMmVXQ3F2MjFmTUYwNUNsSWFwOWhHclJWMnMxeHhzK3p1Q2Zzd3M3dWhTR0UrWVFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MTc1NzY1CWZpbGU6Vm9jYWJ1bGFpcmVfNC4xLjBfeDY0LXNldHVwLWVzc2FpLmV4ZQpqTWl1dGZ1OUZ1SE1jNDVOdHBDWE1HdEU4WE5QV1M3NHB3YXNRYXlyMWM3d3JWQ0VxSysyWnhkemY2WlZpeGpTVFNHVXJpSmUzVkFPSUdxOVNJRktDQT09Cg==",
+      "signature": "",
       "url": "https://harry-safe.github.io/Vocabulaire-versions/appli/essai/Vocabulaire_4.1.0_x64-setup-essai.exe"
     }
   }

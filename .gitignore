@@ -1,3 +1,7 @@
 _site/
 __pycache__/
 *.sig
+# fabrication de l’application Windows (outils/fabriquer-appli.py)
+construction/
+paquet/
+paquets/

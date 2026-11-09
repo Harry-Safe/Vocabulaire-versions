@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "La fenêtre principale de Vocabulaire seulement",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

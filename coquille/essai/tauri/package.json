@@ -1,0 +1,12 @@
+{
+  "name": "vocabulaire-appli",
+  "private": true,
+  "description": "Outils de construction de l'application Windows Vocabulaire (Tauri)",
+  "scripts": {
+    "icones": "tauri icon icone.png",
+    "construire": "tauri build --bundles nsis"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.4"
+  }
+}

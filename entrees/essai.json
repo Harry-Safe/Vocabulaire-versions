@@ -1,7 +1,7 @@
 {
   "version": "4.1.0",
-  "date": "2026-11-08",
-  "commit": "3d522aca0f1763622d30e972674c374f4ebf08ee",
+  "date": "2026-11-09",
+  "commit": "b79afeaeea6a87458d94a54c231f1c23276d111c",
   "notes": [
     "Application Windows « Vocabulaire » (installateur .exe, Tauri 2) : la même appli dans sa propre fenêtre, ouverte agrandie, une seule à la fois.",
     "Dossier de sauvegarde automatique choisi une fois par une fenêtre de Windows puis rebranché tout seul à chaque démarrage et après chaque mise à jour, sans autorisation à redonner ; s'il est introuvable (Google Drive arrêté, clé débranchée), l'appli le signale et ne le recrée pas vide.",
@@ -13,8 +13,8 @@
   "fichiers": {
     "appli": {
       "url": "appli/essai/Vocabulaire_4.1.0_x64-setup-essai.exe",
-      "taille": 1530548,
-      "sha256": "65a03d15be501be15e299f279c718020e9f94991fa3ce8b7633bf0e1445e764d"
+      "taille": null,
+      "sha256": null
     },
     "html": {
       "url": "html/essai/Vocabulaire.html",

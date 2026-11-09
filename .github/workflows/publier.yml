@@ -1,19 +1,100 @@
-# Prépare, signe et publie le site des mises à jour de Vocabulaire (GitHub Pages).
+# Fabrique l'application Windows de chaque canal (si elle n'est pas déjà dans le dépôt), prépare, signe et publie le
+# site des mises à jour de Vocabulaire (GitHub Pages).
+# La fabrication se fait ici (dépôt public : minutes GitHub sans quota) à partir de la page publiée sur le canal et de
+# la coquille Tauri de coquille/<canal>/ ; une même fabrication est réutilisée tant que ni l'une ni l'autre ne change.
+# Branches claude/fabrication-* : fabrication et assemblage du site pour contrôle ; rien n'est signé ni publié.
 name: Publier les mises à jour
 on:
   push:
-    branches: [main]
+    branches: [main, "claude/fabrication-*"]
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
+
 jobs:
-  publier:
+  appli:
+    name: Application Windows (${{ matrix.canal }})
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        canal: [stable, essai]
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Faut-il fabriquer ?
+        id: plan
+        run: python outils/fabriquer-appli.py ${{ matrix.canal }} --plan
+      - name: Fabrication déjà faite ?
+        if: steps.plan.outputs.fabriquer == 'oui'
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: paquet
+          key: appli-${{ matrix.canal }}-${{ steps.plan.outputs.cle }}
+      - name: Préparer la coquille et la page
+        if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        run: python outils/fabriquer-appli.py ${{ matrix.canal }} --preparer
+      - if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        uses: dtolnay/rust-toolchain@stable
+      - if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "construction/tauri/src-tauri -> target"
+          key: ${{ matrix.canal }}
+      - name: Fabriquer l'installateur
+        if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        run: python outils/fabriquer-appli.py ${{ matrix.canal }} --compiler
+      - name: Garder la fabrication
+        if: steps.plan.outputs.fabriquer == 'oui' && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: paquet
+          key: appli-${{ matrix.canal }}-${{ steps.plan.outputs.cle }}
+      - name: Transmettre à la publication
+        if: steps.plan.outputs.fabriquer == 'oui'
+        uses: actions/upload-artifact@v4
+        with:
+          name: appli-${{ matrix.canal }}
+          path: paquet/${{ steps.plan.outputs.nom }}
+          if-no-files-found: error
+          retention-days: 1
+
+  # Branches claude/fabrication-* : même assemblage que la publication, sans rien signer ni publier.
+  verifier:
+    needs: appli
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: appli-*
+          path: paquets
+      - name: Ranger les installateurs et assembler le site
+        run: |
+          python3 outils/fabriquer-appli.py --placer paquets
+          python3 outils/assembler.py
+          ls -lR _site/appli
+
+  publier:
+    needs: appli
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploiement.outputs.page_url }}
@@ -22,6 +103,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Installateurs fabriqués
+        uses: actions/download-artifact@v4
+        with:
+          pattern: appli-*
+          path: paquets
+      - name: Ranger les installateurs fabriqués
+        run: python outils/fabriquer-appli.py --placer paquets
       - name: Assembler le site
         run: python outils/assembler.py
       - uses: actions/setup-node@v4
