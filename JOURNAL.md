@@ -14,11 +14,11 @@ Le plus récent en tête.
   chemin depuis la branche source `claude/fabrication-publique` (= `claude/essai-4.1` + ce changement de procédure) : page
   identique à l'octet, installateur retiré du dépôt, coquille et fiches écrites.
 - **Validation :** action `42702450568` : stable sans application (rien à fabriquer) ; essai **fabriqué**
-  (`Vocabulaire_4.1.0_x64-setup-essai.exe`  1 530 391 octets contre 1 530 548 pour celui du dépôt privé)  rangé  empreinte
-  écrite  site assemblé (`versions.json : essai …`). Signature non essayée sur branche (secret et Pages réservés à
+  (`Vocabulaire_4.1.0_x64-setup-essai.exe`, 1 530 391 octets contre 1 530 548 pour celui du dépôt privé), rangé, empreinte
+  écrite, site assemblé (`versions.json : essai …`). Signature non essayée sur branche (secret et Pages réservés à
   `main`).
-- **Livraison :** branche `claude/fabrication-publique` seulement. Au passage sur `main` (accord de Franck requis) 
-  l'essai sera refabriqué  signé et republié à l'identique (même version : aucun poste n'est relancé).
+- **Livraison :** branche `claude/fabrication-publique` seulement. Au passage sur `main` (accord de Franck requis),
+  l'essai sera refabriqué, signé et republié à l'identique (même version : aucun poste n'est relancé).
 
 ## 2026-11-08 — Essai 4.1.0 (premier dépôt)
 
